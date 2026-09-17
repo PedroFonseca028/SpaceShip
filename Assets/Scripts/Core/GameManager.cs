@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private PlayerHealth playerHealth;
     private Vector3 playerSpawnPosition;
     private bool isGameOver;
+    private bool isWon;
 
     void Awake()
     {
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (isGameOver && Input.GetKeyDown(KeyCode.R)) Restart();
+        if ((isGameOver || isWon) && Input.GetKeyDown(KeyCode.R)) Restart();
     }
 
     public void RegisterPlayer(GameObject playerObject, Vector3 spawnPosition)
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        if (isGameOver) return;
+        if (isGameOver || isWon) return;
         isGameOver = true;
 
         if (playerController != null) playerController.enabled = false;
@@ -44,9 +45,24 @@ public class GameManager : MonoBehaviour
         UIController.Instance?.ShowGameOver(finalScore);
     }
 
+    public void Victory()
+    {
+        if (isGameOver || isWon) return;
+        isWon = true;
+
+        if (playerController != null) playerController.enabled = false;
+        if (playerShooting != null) playerShooting.enabled = false;
+
+        SetSpawnersActive(false);
+
+        int finalScore = ScoreManager.Instance != null ? ScoreManager.Instance.Score : 0;
+        UIController.Instance?.ShowVictory(finalScore);
+    }
+
     private void Restart()
     {
         isGameOver = false;
+        isWon = false;
 
         foreach (Bullet b in FindObjectsByType<Bullet>(FindObjectsSortMode.None)) Destroy(b.gameObject);
         foreach (Enemy e in FindObjectsByType<Enemy>(FindObjectsSortMode.None)) Destroy(e.gameObject);
@@ -63,6 +79,7 @@ public class GameManager : MonoBehaviour
         ScoreManager.Instance?.ResetScore();
         SlowMotionController.Instance?.ResetState();
         UIController.Instance?.HideGameOver();
+        UIController.Instance?.HideVictory();
 
         SetSpawnersActive(true);
     }
