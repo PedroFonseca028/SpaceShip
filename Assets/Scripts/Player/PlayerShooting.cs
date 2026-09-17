@@ -35,6 +35,8 @@ public class PlayerShooting : MonoBehaviour
         Rigidbody2D rb = obj.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.gravityScale = 0f;
+        // Sem isso, dois Rigidbody2D Kinematic (bala e inimigo) nao geram OnTriggerEnter2D entre si.
+        rb.useFullKinematicContacts = true;
 
         Bullet bullet = obj.AddComponent<Bullet>();
         bullet.speed = bulletSpeed;

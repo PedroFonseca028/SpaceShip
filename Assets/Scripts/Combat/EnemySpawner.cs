@@ -49,6 +49,8 @@ public class EnemySpawner : MonoBehaviour
         Rigidbody2D rb = obj.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.gravityScale = 0f;
+        // Necessario para gerar OnTriggerEnter2D contra outros corpos Kinematic (bala, jogador).
+        rb.useFullKinematicContacts = true;
 
         Enemy enemy = obj.AddComponent<Enemy>();
         enemy.moveSpeed = Random.Range(minEnemySpeed, maxEnemySpeed);

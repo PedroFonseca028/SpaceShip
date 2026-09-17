@@ -51,7 +51,9 @@ public class GameBootstrapper : MonoBehaviour
 
     private void SpawnBackground()
     {
+        // Slide: "Crie um objeto vazio dentro do main camera... Chame este objeto de Background".
         GameObject backgroundRoot = new GameObject("Background");
+        backgroundRoot.transform.SetParent(Camera.main.transform, true);
 
         CreateParallaxLayer(backgroundRoot.transform, "FarStars", sortingOrder: 0, starCount: 40,
             starColor: new Color(1f, 1f, 1f, 0.5f), parallaxEffect: 0.3f, baseSpeed: 2.5f, seed: 1);
@@ -103,6 +105,8 @@ public class GameBootstrapper : MonoBehaviour
         Rigidbody2D rb = player.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.gravityScale = 0f;
+        // Necessario para gerar OnTriggerEnter2D contra inimigos e power-ups (tambem Kinematic).
+        rb.useFullKinematicContacts = true;
 
         player.AddComponent<PlayerController>();
         player.AddComponent<PlayerHealth>();

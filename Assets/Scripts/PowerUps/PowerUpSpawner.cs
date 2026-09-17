@@ -49,6 +49,8 @@ public class PowerUpSpawner : MonoBehaviour
         Rigidbody2D rb = obj.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.gravityScale = 0f;
+        // Necessario para gerar OnTriggerEnter2D contra o jogador (tambem Kinematic).
+        rb.useFullKinematicContacts = true;
 
         PowerUp powerUp = obj.AddComponent<PowerUp>();
         powerUp.moveSpeed = powerUpSpeed;
