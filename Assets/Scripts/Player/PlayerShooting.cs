@@ -12,7 +12,7 @@ public class PlayerShooting : MonoBehaviour
     void Update()
     {
         cooldown -= Time.deltaTime;
-        if (Input.GetButton("Fire1") && cooldown <= 0f)
+        if (Input.GetKeyDown(KeyCode.Space) && cooldown <= 0f)
         {
             Shoot();
             cooldown = 1f / fireRate;
